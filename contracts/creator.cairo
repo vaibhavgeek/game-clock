@@ -6,9 +6,14 @@ from starkware.cairo.common.cairo_builtins import HashBuiltin
 from starkware.starknet.common.syscalls import get_block_timestamp
 from starkware.cairo.common.math_cmp import is_le
 
-# # @title Example counter task.
-# # @description Incrementable counter.
-# # @author Peteris <github.com/Pet3ris>
+@contract_interface
+namespace contract_B:
+    func increase_balance(number : felt):
+    end
+
+    func get_balance() -> (number : felt):
+    end
+end
 
 #############################################
 # #                 STORAGE                 ##
@@ -28,14 +33,16 @@ end
 
 @view
 func counter{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr}() -> (
-        counter : felt):
+    counter : felt
+):
     let (counter) = __counter.read()
     return (counter)
 end
 
 @view
 func lastExecuted{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr}() -> (
-        lastExecuted : felt):
+    lastExecuted : felt
+):
     let (lastExecuted) = __lastExecuted.read()
     return (lastExecuted)
 end
@@ -46,7 +53,8 @@ end
 
 @view
 func probeTask{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr}() -> (
-        taskReady : felt):
+    taskReady : felt
+):
     alloc_locals
 
     let (lastExecuted) = __lastExecuted.read()
@@ -64,6 +72,9 @@ func executeTask{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_p
 
     let (counter) = __counter.read()
     let new_counter = counter + 1
+    let (b_addr) = contract_B_address.read()
+    let (b_num) = contract_B.read_number(b_addr)
+
     let (block_timestamp) = get_block_timestamp()
     __lastExecuted.write(block_timestamp)
     __counter.write(new_counter)
