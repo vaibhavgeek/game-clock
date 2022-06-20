@@ -33,7 +33,7 @@
                 "type": "felt"
             }
         ],
-        "name": "removeWhitelistAddress",
+        "name": "revokeAccess",
         "outputs": [
             {
                 "name": "output",

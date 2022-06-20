@@ -9,9 +9,9 @@ from starkware.cairo.common.memcpy import memcpy
 from starkware.cairo.common.bool import TRUE
 from starkware.starknet.common.syscalls import call_contract, get_caller_address, get_tx_info
 
-from openzeppelin.introspection.ERC165 import ERC165
+from contracts.accounts.ERC165 import ERC165
 
-from openzeppelin.utils.constants import IACCOUNT_ID
+from contracts.accounts.constants import IACCOUNT_ID
 
 #
 # Storage
